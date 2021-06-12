@@ -1,15 +1,20 @@
 package day17;
 
-public class Person {
+import java.io.Serializable;
+import java.lang.reflect.Method;
 
-  public String name;
-  public int age;
+public class Person implements Serializable {
+
+  private String name;
+  private int age;
+  public String address;
 
   public String toString() {
     return "名字：" + this.getName() + ", 年龄：" + this.getAge();
   }
 
-  public Person() {}
+  public Person() {
+  }
 
   public Person(String name, int age) {
     this.name = name;
@@ -40,4 +45,25 @@ public class Person {
     this.age = age;
   }
 
+  public void showInfo(String name) {
+    System.out.println("你好，" + name);
+  }
+
+  private void doSleep() {
+    System.out.println("休息了");
+  }
+
+  public static void main(String[] args) {
+    Class<?> c = null;
+
+    try {
+      c = Class.forName("day17.Person");
+      Method method = c.getDeclaredMethod("doSleep", new Class[]{});
+      Person p = (Person) c.newInstance();
+      method.invoke(p, null);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 }
